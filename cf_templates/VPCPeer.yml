@@ -152,3 +152,5 @@ Outputs:
     Value: !GetAtt
       - CreateVPCPeer
       - VPCRequestId
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-VPCRequestId'
