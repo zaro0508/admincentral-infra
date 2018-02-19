@@ -1,2 +1,68 @@
-# admincentral-infra
-Infrastructure for the AWS AdminCentral account
+# Overview
+Install, configure and manage the AWS AdminCentral account.
+
+
+## Instructions to create or update CF stacks
+
+```
+# unlock repo
+git-crypt unlock
+# set env vars
+source env_vars && source env_vars.secret
+# Run commands in update_cf_stack.sh to create or update CF stacks
+```
+
+The above should setup resources for the account.  Once the infrastructure for the account has been setup
+you can access and view the account using the AWS console[1].
+
+*Note - This project depends on CF templates from other accounts.*
+
+## VPN Gateway
+This account is setup to be the VPN Gateway.  A VPC peering connection is required to
+allow the VPN access to other VPCs.  To setup VPC peering from the VPN VPC to another
+VPC run the following template.
+
+```
+aws --profile aws-admin --region us-east-1 cloudformation create-stack \
+  --stack-name vpc-peer-$PeerAccountName \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --template-body cf_templates/VPCPeer.yml \
+  --parameters \
+  ParameterKey=LocalVPC,ParameterValue=$AdminCentralVpcId \
+  ParameterKey=PeerVPC,ParameterValue=$PeerAccountVpcId \
+  ParameterKey=PeerVPCOwner,ParameterValue=$PeerAccountId \
+  ParameterKey=PeerRoleName,ParameterValue=$VPCPeeringAuthorizerRole
+```
+
+The [VPCPeer.yml template](./cf_templates/VPCPeer.yml) should setup the VPC peering
+from this account to the account identified by *$PeerAccountName*
+
+
+## Continuous Integration
+We have configured Travis to deploy CF template updates.  Travis does this by running update_cf_stack.sh on every
+change.
+
+
+# Contributions
+
+## Issues
+* https://sagebionetworks.jira.com/projects/BRIDGE
+
+## Builds
+* https://travis-ci.org/Sage-Bionetworks/admincentral-infra
+
+## Secrets
+* We use git-crypt[3] to hide secrets.  Access to secrets is tightly controlled.  You will be required to
+have your own GPG key[4] and you must request access by a maintainer of this project.
+
+
+
+# References
+
+[1] https://AWS-account-ID-or-alias.signin.aws.amazon.com/console
+
+[2] https://github.com/Sage-Bionetworks/Bridge-infra
+
+[3] https://github.com/AGWA/git-crypt
+
+[4] https://help.github.com/articles/generating-a-new-gpg-key
