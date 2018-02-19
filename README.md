@@ -24,18 +24,32 @@ VPC run the following template.
 
 ```
 aws --profile aws-admin --region us-east-1 cloudformation create-stack \
-  --stack-name vpc-peer-$PeerAccountName \
-  --capabilities CAPABILITY_NAMED_IAM \
-  --template-body cf_templates/VPCPeer.yml \
-  --parameters \
-  ParameterKey=LocalVPC,ParameterValue=$AdminCentralVpcId \
-  ParameterKey=PeerVPC,ParameterValue=$PeerAccountVpcId \
-  ParameterKey=PeerVPCOwner,ParameterValue=$PeerAccountId \
-  ParameterKey=PeerRoleName,ParameterValue=$VPCPeeringAuthorizerRole
+--stack-name peering-$PeerAccountVpcId \
+--capabilities CAPABILITY_NAMED_IAM \
+--template-body file://cf_templates/VPCPeer.yml \
+--parameters \
+ParameterKey=LocalVPC,ParameterValue=$SophosVpcId \
+ParameterKey=PeerVPC,ParameterValue=$PeerAccountVpcId \
+ParameterKey=PeerVPCOwner,ParameterValue=$PeerAccountId \
+ParameterKey=PeerRoleName,ParameterValue=$VPCPeeringAuthorizerRole
+```
+
+```
+aws --profile aws-admin --region us-east-1 cloudformation create-stack \
+--stack-name peering-vpc-5678efghi \
+--capabilities CAPABILITY_NAMED_IAM \
+--template-body file://cf_templates/VPCPeer.yml \
+--parameters \
+ParameterKey=LocalVPC,ParameterValue="vpc-1234abcd" \
+ParameterKey=PeerVPC,ParameterValue="vpc-5678efghi" \
+ParameterKey=PeerVPCOwner,ParameterValue="123456789123" \
+ParameterKey=PeerRoleName,ParameterValue="essentials-VPCPeeringAuthorizerRole-UYRMWCKIO3GS"
 ```
 
 The [VPCPeer.yml template](./cf_templates/VPCPeer.yml) should setup the VPC peering
-from this account to the account identified by *$PeerAccountName*
+from this account to the account identified by *$PeerAccountName*.  This template
+should be run for each VPC peering connection therefore a `unique stack-name should
+be given` for each run of this template.
 
 
 ## Continuous Integration
