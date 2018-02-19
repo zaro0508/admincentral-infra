@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account')
 CF_BUCKET_URL="https://s3.amazonaws.com/bootstrap-awss3cloudformationbucket-19qromfd235z9/master"
 
 STACK_NAME="bootstrap"
@@ -33,7 +34,8 @@ UPDATE_CMD="aws cloudformation update-stack \
 --template-url $CF_BUCKET_URL/$CF_TEMPLATE \
 --parameters \
 ParameterKey=FhcrcVpnCidrip,ParameterValue=\"$FhcrcVpnCidrip\" \
-ParameterKey=OperatorEmail,ParameterValue=\"$OperatorEmail\""
+ParameterKey=OperatorEmail,ParameterValue=\"$OperatorEmail\" \
+ParameterKey=VpcPeeringRequesterAwsAccountId,ParameterValue=\"$AWS_ACCOUNT_ID\""
 message=$($UPDATE_CMD 2>&1 1>/dev/null)
 error_code=$(echo $?)
 if [[ $error_code -ne 0 && $message =~ .*"No updates are to be performed".* ]]; then
