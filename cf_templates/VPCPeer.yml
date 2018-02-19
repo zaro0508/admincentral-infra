@@ -8,6 +8,9 @@ Parameters:
   LocalVPC:
     Description: Local VPC ID
     Type: String
+  PeerAccountName:
+    Description: VPC Name in the peer account
+    Type: String
   PeerVPC:
     Description: VPC ID in the peer account
     Type: String
@@ -28,6 +31,7 @@ Resources:
         - LambdaVPCPeer
         - Arn
       LocalVPC: !Ref LocalVPC
+      PeerAccountName: !Ref PeerAccountName
       PeerVPC: !Ref PeerVPC
       PeerVPCOwner: !Ref PeerVPCOwner
       PeerRoleName: !Ref PeerRoleName
@@ -77,12 +81,15 @@ Resources:
             - '      cfnresponse.send(event, context, cfnresponse.FAILED, PayLoad)'
             - '      return'
             - '    localVPC = event[''ResourceProperties''][''LocalVPC'']'
+            - '    PeerAccountName = event[''ResourceProperties''][''PeerAccountName'']'
             - '    PeerVPC = event[''ResourceProperties''][''PeerVPC'']'
             - '    PeerVPCOwner = event[''ResourceProperties''][''PeerVPCOwner'']'
             - '    vpcrequest = ec2.create_vpc_peering_connection(VpcId=localVPC,'
             - '      PeerVpcId=PeerVPC,'
             - '      PeerOwnerId=PeerVPCOwner)'
             - '    PayLoad[''VPCRequestId''] = vpcrequest.id'
+            - '    # Tag Peering connection'
+            - '    ec2.tag(vpcrequest, "Name", PeerAccountName)'
             - '  except Exception as e:'
             - '    logging.error(''VPCPeer Request Failed (%s)'', e)'
             - '    cfnresponse.send(event, context, cfnresponse.FAILED, PayLoad)'

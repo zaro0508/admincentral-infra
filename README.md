@@ -41,6 +41,7 @@ aws --profile aws-admin --region us-east-1 cloudformation create-stack \
 --template-body file://cf_templates/VPCPeer.yml \
 --parameters \
 ParameterKey=LocalVPC,ParameterValue="vpc-1234abcd" \
+ParameterKey=PeerAccountName,ParameterValue="BridgeDev" \
 ParameterKey=PeerVPC,ParameterValue="vpc-5678efghi" \
 ParameterKey=PeerVPCOwner,ParameterValue="123456789123" \
 ParameterKey=PeerRoleName,ParameterValue="essentials-VPCPeeringAuthorizerRole-UYRMWCKIO3GS"
