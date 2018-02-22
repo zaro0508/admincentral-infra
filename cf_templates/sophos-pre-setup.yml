@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  Template to create required resources for sophos utm
+Resources:
+  # Certificate creation requires a manual step, either email or dns approval
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: vpn.sagebase.org
+      Tags:
+        -
+          Key: "Application"
+          Value:
+            Ref: "AWS::StackName"
+        -
+          Key: "Name"
+          Value: "VPN Cert"
+Outputs:
+  Certificate:
+    Value: !Ref Certificate
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-Certificate'

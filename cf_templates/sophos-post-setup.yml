@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  Template to complete sophos utm setup
+Resources:
+  HostedZone:
+    Type: "AWS::Route53::HostedZone"
+    Properties:
+      HostedZoneConfig:
+        Comment: "Hosted zone for sagebase.org"
+      Name: "sagebase.org"
+      VPCs:
+        -
+          VPCId: !ImportValue "us-east-1-sophos-utm-VPCID"
+          VPCRegion: "us-east-1"
+      HostedZoneTags:
+        -
+          Key: "Application"
+          Value:
+            Ref: "AWS::StackName"
+        -
+          Key: "Name"
+          Value: "VPN"
+  DnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Ref HostedZone
+      Name: !Join ['', ['vpn', ., !GetAtt 'HostedZone.NameServers']]
+      Type: A
+      TTL: '900'
+      ResourceRecords:
+        - !ImportValue us-east-1-sophos-utm-PublicIPAddress
+      Tags:
+        -
+          Key: "Application"
+          Value:
+            Ref: "AWS::StackName"
+        -
+          Key: "Name"
+          Value: "VPN DNS"
+Outputs:
+  HostedZone:
+    Value: !Ref HostedZone
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-HostedZone'
+  DnsRecord:
+    Value: !Ref DnsRecord
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-DnsRecord'

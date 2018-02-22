@@ -1997,7 +1997,17 @@
         "GroupDescription": "Enable HTTP access on port 8080",
         "VpcId": {
           "Ref": "VPC"
-        }
+        },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": {
+              "Ref": "awsTrustedNetwork"
+            }
+          }
+        ]
       }
     },
     "ElasticLoadBalancer": {
@@ -2027,6 +2037,13 @@
             "LoadBalancerPort": "80",
             "InstancePort": "80",
             "Protocol": "TCP"
+          },
+          {
+            "LoadBalancerPort": "443",
+            "Protocol": "HTTPS",
+            "SSLCertificateId": { "Fn::ImportValue" : us-east-1-sophos-pre-setup-Certificate },
+            "InstancePort": "80",
+            "InstanceProtocol": "HTTP"
           }
         ],
         "HealthCheck": {
