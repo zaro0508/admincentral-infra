@@ -2836,7 +2836,7 @@
         ]
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-PublicIPAddress"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-PublicIPAddress"}
       },
       "Description": "Use this IP to connect and to forward traffic to the UTM."
     },
@@ -2845,7 +2845,7 @@
         "Ref": "QueenScalingGroup"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-QueenScalingGroup"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-QueenScalingGroup"}
       },
       "Description": "The HA Scaling group."
     },
@@ -2862,7 +2862,7 @@
         ]
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-S3Bucket"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-S3Bucket"}
       },
       "Description": "The S3 Bucket."
     },
@@ -2871,7 +2871,7 @@
         "Ref": "SwarmScalingGroup"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-SwarmScalingGroup"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-SwarmScalingGroup"}
       },
       "Description": "The Swarm scaling group."
     },
@@ -2880,7 +2880,7 @@
         "Ref": "VPC"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-VPCID"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-VPCID"}
       },
       "Description": "The VPC of the Swarm"
     },
@@ -2889,7 +2889,7 @@
         "Ref": "AWS::Region"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-Region"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-Region"}
       },
       "Description": "Region of the stack"
     },
@@ -2898,7 +2898,7 @@
         "Ref": "ElasticLoadBalancer"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-ELB"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-ELB"}
       },
       "Description": "Swarm ELB"
     },
@@ -2907,7 +2907,7 @@
         "Ref": "QueenSubnet1"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-QueenSubnet1"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-QueenSubnet1"}
       },
       "Description": "Queen Subnet 1"
     },
@@ -2916,7 +2916,7 @@
         "Ref": "QueenSubnet2"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-QueenSubnet2"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-QueenSubnet2"}
       },
       "Description": "Queen Subnet 2"
     },
@@ -2925,7 +2925,7 @@
         "Ref": "SwarmSubnet1"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-SwarmSubnet1"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-SwarmSubnet1"}
       },
       "Description": "Swarm Subnet 1"
     },
@@ -2934,7 +2934,7 @@
         "Ref": "SwarmSubnet2"
       },
       "Export": {
-        "Name": {"Fn::Sub": "${AWS::StackName}-SwarmSubnet2"}
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-SwarmSubnet2"}
       },
       "Description": "Swarm Subnet 2"
     }
