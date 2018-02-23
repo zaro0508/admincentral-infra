@@ -5,9 +5,10 @@ Description: >-
   authorize the VPC Peer request
 Metadata: {}
 Parameters:
-  LocalVPC:
-    Description: Local VPC ID
+  SophosVPC:
+    Description: The sophos-utm VPC ID
     Type: String
+    Default: "vpc-2135cc5a"
   PeerVPC:
     Description: VPC ID in the peer account
     Type: String
@@ -27,7 +28,7 @@ Resources:
       ServiceToken: !GetAtt
         - LambdaVPCPeer
         - Arn
-      LocalVPC: !Ref LocalVPC
+      LocalVPC: !Ref SophosVPC
       PeerVPC: !Ref PeerVPC
       PeerVPCOwner: !Ref PeerVPCOwner
       PeerRoleName: !Ref PeerRoleName
