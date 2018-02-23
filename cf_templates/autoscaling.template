@@ -2884,6 +2884,15 @@
       },
       "Description": "The VPC of the Swarm"
     },
+    "VPCCIDR": {
+      "Value": {
+        "Fn::GetAtt": [ "VPC", "CidrBlock" ]
+      },
+      "Export": {
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-VPCCIDR"}
+      },
+      "Description": "CIDR of the VPC"
+    },
     "Region": {
       "Value": {
         "Ref": "AWS::Region"
@@ -2937,6 +2946,24 @@
         "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-SwarmSubnet2"}
       },
       "Description": "Swarm Subnet 2"
+    },
+    "QueenRouteTable": {
+      "Value": {
+        "Ref": "RouteTable"
+      },
+      "Export": {
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-QueenRouteTable"}
+      },
+      "Description": "Queen Route Table"
+    },
+    "SwarmRouteTable": {
+      "Value": {
+        "Ref": "SwarmRouteTable"
+      },
+      "Export": {
+        "Name": {"Fn::Sub": "${AWS::Region}-${AWS::StackName}-SwarmRouteTable"}
+      },
+      "Description": "Swarm Route Table"
     }
   }
 }
