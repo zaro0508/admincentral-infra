@@ -24,32 +24,40 @@ VPC run the following template.
 
 ```
 aws --profile aws-admin --region us-east-1 cloudformation create-stack \
---stack-name peering-$PeerAccountVpcId \
+--stack-name peering-$PeerAccountName \
 --capabilities CAPABILITY_NAMED_IAM \
 --template-body file://cf_templates/VPCPeer.yml \
 --parameters \
-ParameterKey=LocalVPC,ParameterValue=$SophosVpcId \
 ParameterKey=PeerVPC,ParameterValue=$PeerAccountVpcId \
 ParameterKey=PeerVPCOwner,ParameterValue=$PeerAccountId \
-ParameterKey=PeerRoleName,ParameterValue=$VPCPeeringAuthorizerRole
+ParameterKey=PeerRoleName,ParameterValue=$VPCPeeringAuthorizerRole \
+ParameterKey=PeerPublicRouteTable,ParameterValue=$PeerPublicRouteTable \
+ParameterKey=PeerPrivateRouteTable,ParameterValue=$PeerPublicRouteTable
 ```
 
+
+Example:
 ```
 aws --profile aws-admin --region us-east-1 cloudformation create-stack \
---stack-name peering-vpc-5678efghi \
+--stack-name peering-BridgeDev \
 --capabilities CAPABILITY_NAMED_IAM \
 --template-body file://cf_templates/VPCPeer.yml \
 --parameters \
-ParameterKey=LocalVPC,ParameterValue="vpc-1234abcd" \
 ParameterKey=PeerVPC,ParameterValue="vpc-5678efghi" \
 ParameterKey=PeerVPCOwner,ParameterValue="123456789123" \
-ParameterKey=PeerRoleName,ParameterValue="essentials-VPCPeeringAuthorizerRole-UYRMWCKIO3GS"
+ParameterKey=PeerRoleName,ParameterValue="essentials-VPCPeeringAuthorizerRole-UYRMWCKIO3GS" \
+ParameterKey=PeerPublicRouteTable,ParameterValue="rtb-d3b64eaf" \
+ParameterKey=PeerPrivateRouteTable,ParameterValue="rtb-49b14935"
 ```
 
 The [VPCPeer.yml template](./cf_templates/VPCPeer.yml) should setup the VPC peering
-from this account to the account identified by *$PeerAccountName*.  This template
-should be run for each VPC peering connection therefore a `unique stack-name should
-be given` for each run of this template.
+from the VPN VPC to the *$PeerVPC* in the account identified by *$PeerAccountName*.
+This template should be run for each VPC peering connection therefore a
+`unique stack-name should be given` for each run of this template.
+
+**Note** - VPCPeer.yml requires that the *$PeerVPC* be setup with [CrossAccountRoleTemplate.json](https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/solutions/VPCPeering/CrossAccountRoleTemplate.json)
+template which was added to the [essentials.yml](https://github.com/Sage-Bionetworks/aws-infra/blob/master/cf_templates/essentials.yml)
+template.
 
 
 ## Continuous Integration

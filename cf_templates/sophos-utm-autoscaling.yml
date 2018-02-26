@@ -1,3 +1,4 @@
+# Template source: https://github.com/sophos-iaas/aws-cf-templates/blob/master/utm/9.506/autoscaling.template
 AWSTemplateFormatVersion: 2010-09-09
 Description: Scalable UTM CloudFormation template
 Parameters:
