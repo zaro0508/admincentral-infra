@@ -13,7 +13,7 @@ source env_vars && source env_vars.secret
 ```
 
 The above should setup resources for the account.  Once the infrastructure for the account has been setup
-you can access and view the account using the AWS console[1].
+you can access and view the account using the [AWS console](https://AWS-account-ID-or-alias.signin.aws.amazon.com/console).
 
 *Note - This project depends on CF templates from other accounts.*
 
@@ -23,7 +23,7 @@ allow the VPN access to other VPCs.  To setup VPC peering from the VPN VPC to an
 VPC run the following template.
 
 ```
-aws --profile aws-admin --region us-east-1 cloudformation create-stack \
+aws --profile admincentral.travis --region us-east-1 cloudformation create-stack \
 --stack-name peering-$PeerAccountName \
 --capabilities CAPABILITY_NAMED_IAM \
 --template-body file://cf_templates/VPCPeer.yml \
@@ -31,23 +31,19 @@ aws --profile aws-admin --region us-east-1 cloudformation create-stack \
 ParameterKey=PeerVPC,ParameterValue=$PeerAccountVpcId \
 ParameterKey=PeerVPCOwner,ParameterValue=$PeerAccountId \
 ParameterKey=PeerRoleName,ParameterValue=$VPCPeeringAuthorizerRole \
-ParameterKey=PeerPublicRouteTable,ParameterValue=$PeerPublicRouteTable \
-ParameterKey=PeerPrivateRouteTable,ParameterValue=$PeerPublicRouteTable
 ```
 
 
 Example:
 ```
-aws --profile aws-admin --region us-east-1 cloudformation create-stack \
---stack-name peering-BridgeDev \
+aws --profile admincentral.travis --region us-east-1 cloudformation create-stack \
+--stack-name peering-bridge-develop \
 --capabilities CAPABILITY_NAMED_IAM \
 --template-body file://cf_templates/VPCPeer.yml \
 --parameters \
 ParameterKey=PeerVPC,ParameterValue="vpc-5678efghi" \
 ParameterKey=PeerVPCOwner,ParameterValue="123456789123" \
 ParameterKey=PeerRoleName,ParameterValue="essentials-VPCPeeringAuthorizerRole-UYRMWCKIO3GS" \
-ParameterKey=PeerPublicRouteTable,ParameterValue="rtb-d3b64eaf" \
-ParameterKey=PeerPrivateRouteTable,ParameterValue="rtb-49b14935"
 ```
 
 The [VPCPeer.yml template](./cf_templates/VPCPeer.yml) should setup the VPC peering
@@ -57,7 +53,9 @@ This template should be run for each VPC peering connection therefore a
 
 **Note** - VPCPeer.yml requires that the *$PeerVPC* be setup with [CrossAccountRoleTemplate.json](https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/solutions/VPCPeering/CrossAccountRoleTemplate.json)
 template which was added to the [essentials.yml](https://github.com/Sage-Bionetworks/aws-infra/blob/master/cf_templates/essentials.yml)
-template.
+template.  An additional configuration step is required on the PeerVPC end to
+complete this setup, run the [peer-route-config.yml](https://github.com/Sage-Bionetworks/aws-infra/blob/master/cf_templates/peer-route-config.yml)
+template to complete the configuration.
 
 
 ## Continuous Integration
@@ -74,17 +72,7 @@ change.
 * https://travis-ci.org/Sage-Bionetworks/admincentral-infra
 
 ## Secrets
-* We use git-crypt[3] to hide secrets.  Access to secrets is tightly controlled.  You will be required to
-have your own GPG key[4] and you must request access by a maintainer of this project.
-
-
-
-# References
-
-[1] https://AWS-account-ID-or-alias.signin.aws.amazon.com/console
-
-[2] https://github.com/Sage-Bionetworks/Bridge-infra
-
-[3] https://github.com/AGWA/git-crypt
-
-[4] https://help.github.com/articles/generating-a-new-gpg-key
+* We use [git-crypt](https://github.com/AGWA/git-crypt) to hide secrets.
+Access to secrets is tightly controlled.  You will be required to
+have your own [GPG key](https://help.github.com/articles/generating-a-new-gpg-key)
+and you must request access by a maintainer of this project.

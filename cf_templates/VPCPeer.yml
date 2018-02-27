@@ -7,22 +7,16 @@ Description: >-
 Metadata: {}
 Parameters:
   PeerVPC:
-    Description: VPC ID in the peer account
+    Description: VPC ID in the peer account (i.e. vpc-1234abcd)
     Type: String
   PeerVPCCIDR:
-    Description: CIDR of the VPC in the peer account
+    Description: CIDR of the VPC in the peer account (i.e. 10.17.0.0/16)
     Type: String
   PeerVPCOwner:
-    Description: Account ID of the peer account
+    Description: Account ID of the peer account (i.e. 123456789123)
     Type: String
   PeerRoleName:
     Description: Role Name on the peer account
-    Type: String
-  PeerPublicRouteTable:
-    Description: Public route table on the peer account
-    Type: String
-  PeerPrivateRouteTable:
-    Description: Private route table on the peer account
     Type: String
 Resources:
   CreateVPCPeer:
@@ -153,6 +147,7 @@ Resources:
                   - 'ec2:DeleteVpcPeeringConnection'
                   - 'sts:AssumeRole'
                 Resource: '*'
+  # Configure the VPN to VPC routes
   SophosQueenRoute:
     Type: "AWS::EC2::Route"
     DependsOn: "LambdaVPCPeer"
@@ -168,26 +163,6 @@ Resources:
     Properties:
       RouteTableId: !ImportValue "us-east-1-sophos-utm-SwarmRouteTable"
       DestinationCidrBlock: !Ref "PeerVPCCIDR"
-      VpcPeeringConnectionId: !GetAtt
-        - CreateVPCPeer
-        - VPCRequestId
-  PeerPublicRoute:
-    Type: "AWS::EC2::Route"
-    DependsOn: "LambdaVPCPeer"
-    Properties:
-      RouteTableId:
-        Ref: "PeerPublicRouteTable"
-      DestinationCidrBlock: !ImportValue "us-east-1-sophos-utm-VPCCIDR"
-      VpcPeeringConnectionId: !GetAtt
-        - CreateVPCPeer
-        - VPCRequestId
-  PeerPrivateRoute:
-    Type: "AWS::EC2::Route"
-    DependsOn: "LambdaVPCPeer"
-    Properties:
-      RouteTableId:
-        Ref: "PeerPrivateRouteTable"
-      DestinationCidrBlock: !ImportValue "us-east-1-sophos-utm-VPCCIDR"
       VpcPeeringConnectionId: !GetAtt
         - CreateVPCPeer
         - VPCRequestId
