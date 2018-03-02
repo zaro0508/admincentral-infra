@@ -1,0 +1,39 @@
+Description: Setup a hosted zone for simple active directory
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  HostedZone:
+    Type: "AWS::Route53::HostedZone"
+    Properties:
+      HostedZoneConfig:
+        Comment: "Hosted zone for ad.sagebase.org"
+      Name: "sagebase.org"
+      VPCs:
+        -
+          VPCId: !ImportValue us-east-1-it-services-VPCId
+          VPCRegion: "us-east-1"
+      HostedZoneTags:
+        -
+          Key: "Application"
+          Value: !Ref 'AWS::StackName'
+        -
+          Key: "Name"
+          Value: "AD hosted zone"
+  RecordSet:
+    Type: 'AWS::Route53::RecordSet'
+    DependsOn: HostedZone
+    Properties:
+      HostedZoneId: !Ref HostedZone
+      Name: "ad.sagebase.org."
+      AliasTarget:
+        HostedZoneId: !ImportValue us-east-1-ldap-ElbCanonicalHostedZoneNameID
+        DNSName: !ImportValue us-east-1-ldap-LdapsUrl
+      Type: A
+Outputs:
+  HostedZoneId:
+    Value: !Ref HostedZone
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-HostedZoneId'
+  DomainName:
+    Value: !Ref RecordSet
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-DomainName'

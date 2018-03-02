@@ -1,0 +1,33 @@
+Description: Setup a simple active directory service
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  SimpleADPW:
+    Type: String
+    NoEcho: true
+    Description: The AD administrator password
+Resources:
+  SimpleAD:
+    Type: "AWS::DirectoryService::SimpleAD"
+    Properties:
+      Name: "ad.sagebase.org"
+      Password:
+        Ref: SimpleADPW
+      Size: "Small"
+      VpcSettings:
+        SubnetIds:
+          - !ImportValue us-east-1-it-services-PrivateSubnet1
+          - !ImportValue us-east-1-it-services-PrivateSubnet2
+        VpcId: !ImportValue us-east-1-it-services-VPCId
+Outputs:
+  SimpleAdId:
+    Value: !Ref SimpleAD
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-SimpleAdId'
+  SimpleAdPrimaryIp:
+    Value: !Select [0, !GetAtt SimpleAD.DnsIpAddresses]
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-SimpleAdPrimaryIp'
+  SimpleAdSecondaryIP:
+    Value: !Select [1, !GetAtt SimpleAD.DnsIpAddresses]
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-SimpleAdSecondaryIP'

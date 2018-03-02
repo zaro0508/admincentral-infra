@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  Setup required resources for AWS simple active directory
+Parameters:
+  AdDomainName:
+    Type: String
+    Description: "The domain name for the AD"
+    Default: "ad.sagebase.org"
+Resources:
+  # Create SSL certificate for AD and ldap
+  # Note - this requires a manual email or dns approval
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref AdDomainName
+      Tags:
+        -
+          Key: "Application"
+          Value:
+            Ref: "AWS::StackName"
+        -
+          Key: "Name"
+          Value: "AD Certificate"
+Outputs:
+  CertificateArn:
+    Value: !Ref Certificate
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-CertificateArn'
