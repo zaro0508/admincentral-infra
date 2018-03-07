@@ -101,7 +101,7 @@ Resources:
         -
           !Ref "AWSIAMAdminRole"
   # resources for auditors
-  JacobianAccessPolicy:
+  AWSIAMAuditorAccessPolicy:
     Type: 'AWS::IAM::ManagedPolicy'
     Properties:
         PolicyDocument:
@@ -119,14 +119,6 @@ Resources:
             - sqs:ReceiveMessage
             - sdb:Select
             Resource: "*"
-  AWSIAMJacobianUser:
-    Type: 'AWS::IAM::User'
-    Properties:
-      Groups:
-        - !Ref AWSIAMAuditorsGroup
-      LoginProfile:
-        Password: !Ref InitNewUserPassword
-        PasswordResetRequired: true
   AWSIAMAuditorsGroup:
     Type: 'AWS::IAM::Group'
     Properties:
