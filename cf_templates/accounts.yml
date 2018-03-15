@@ -124,7 +124,7 @@ Resources:
     Properties:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/ReadOnlyAccess
-        - !Ref JacobianAccessPolicy
+        - !Ref AWSIAMAuditorAccessPolicy
         - !Ref AWSIAMEnforceMfaPolicy
   # resources for logging services
   AWSIAMSumoLogicUser:
