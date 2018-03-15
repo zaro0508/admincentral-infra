@@ -71,7 +71,7 @@ else
 fi
 
 STACK_NAME="it-services"
-CF_TEMPLATE="$STACK_NAME.yml"
+CF_TEMPLATE="vpc.yml"
 echo -e "\nDeploying CF template $CF_BUCKET_URL/$CF_TEMPLATE"
 UPDATE_CMD="aws cloudformation update-stack \
 --stack-name $STACK_NAME \
