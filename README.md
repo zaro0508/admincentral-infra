@@ -31,6 +31,7 @@ aws --profile admincentral.travis --region us-east-1 cloudformation create-stack
 ParameterKey=PeerVPC,ParameterValue=$PeerAccountVpcId \
 ParameterKey=PeerVPCOwner,ParameterValue=$PeerAccountId \
 ParameterKey=PeerRoleName,ParameterValue=$VPCPeeringAuthorizerRole \
+ParameterKey=PeerVPCCIDR,ParameterValue=$PeerAccountVpcCidr
 ```
 
 
@@ -44,6 +45,7 @@ aws --profile admincentral.travis --region us-east-1 cloudformation create-stack
 ParameterKey=PeerVPC,ParameterValue="vpc-5678efghi" \
 ParameterKey=PeerVPCOwner,ParameterValue="123456789123" \
 ParameterKey=PeerRoleName,ParameterValue="essentials-VPCPeeringAuthorizerRole-UYRMWCKIO3GS" \
+ParameterKey=PeerVPCCIDR,ParameterValue="10.4.0.0/16"
 ```
 
 The [VPCPeer.yml template](./cf_templates/VPCPeer.yml) should setup the VPC peering
