@@ -79,6 +79,7 @@ UPDATE_CMD="aws cloudformation update-stack \
 --notification-arns $CloudformationNotifyLambdaTopicArn \
 --template-url $CF_BUCKET_URL/aws-infra/master/$CF_TEMPLATE \
 --parameters \
+ParameterKey=VpcName,ParameterValue=\"$STACK_NAME\" \
 ParameterKey=VpcSubnetPrefix,ParameterValue="10.4""
 message=$($UPDATE_CMD 2>&1 1>/dev/null)
 error_code=$(echo $?)
