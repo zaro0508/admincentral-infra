@@ -193,7 +193,7 @@ else
   echo $message
 fi
 
-STACK_NAME="peering-scicomp"
+STACK_NAME="peering-computevpc"
 CF_TEMPLATE="VPCPeer.yml"
 echo -e "\nDeploying CF template cf_templates/$CF_TEMPLATE"
 UPDATE_CMD="aws cloudformation update-stack \
@@ -202,7 +202,7 @@ UPDATE_CMD="aws cloudformation update-stack \
 --notification-arns $CloudformationNotifyLambdaTopicArn \
 --template-body file://cf_templates/$CF_TEMPLATE \
 --parameters \
-ParameterKey=PeerVPC,ParameterValue="vpc-f8913983" \
+ParameterKey=PeerVPC,ParameterValue="vpc-e66bd19d" \
 ParameterKey=PeerVPCOwner,ParameterValue=\"$SciCompAwsAccountId\" \
 ParameterKey=PeerVPCCIDR,ParameterValue="10.5.0.0/16" \
 ParameterKey=PeerRoleName,ParameterValue="essentials-VPCPeeringAuthorizerRole-19X5D81TAK34F""
