@@ -154,7 +154,7 @@ UPDATE_CMD="aws cloudformation update-stack \
 --parameters \
 ParameterKey=PeerVPC,ParameterValue="vpc-513ee12a" \
 ParameterKey=PeerVPCOwner,ParameterValue=\"$BridgeDevAwsAccountId\" \
-ParameterKey=PeerVPCCIDR,ParameterValue="172.15.0.0/16" \
+ParameterKey=PeerVPCCIDR,ParameterValue="172.47.0.0/16" \
 ParameterKey=PeerRoleName,ParameterValue="bridge-VPCPeeringAuthorizerRole-13KSQX7XGYVAJ""
 message=$($UPDATE_CMD 2>&1 1>/dev/null)
 error_code=$(echo $?)
