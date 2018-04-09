@@ -152,7 +152,7 @@ UPDATE_CMD="aws cloudformation update-stack \
 --notification-arns $CloudformationNotifyLambdaTopicArn \
 --template-body file://cf_templates/$CF_TEMPLATE \
 --parameters \
-ParameterKey=PeerVPC,ParameterValue="vpc-513ee12a" \
+ParameterKey=PeerVPC,ParameterValue="vpc-98a9c4e3" \
 ParameterKey=PeerVPCOwner,ParameterValue=\"$BridgeDevAwsAccountId\" \
 ParameterKey=PeerVPCCIDR,ParameterValue="172.47.0.0/16" \
 ParameterKey=PeerRoleName,ParameterValue="bridge-VPCPeeringAuthorizerRole-13KSQX7XGYVAJ""
