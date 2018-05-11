@@ -1,0 +1,8 @@
+template_path: remote-templates/vpc.yaml
+stack_name: it-services
+parameters:
+  VpcSubnetPrefix: "10.4"
+  VpcName: it-services
+hooks:
+  before_update:
+    - !cmd "aws --profile {{ var.profile }} s3 cp s3://{{ environment_variable.AdminCentralInfraCfBucket }}/aws-infra/master/vpc.yaml ./remote-templates/vpc.yaml"

@@ -1,0 +1,7 @@
+template_path: templates/VPCPeer.yaml
+stack_name: peering-it-services
+parameters:
+  PeerVPC: vpc-5326f028
+  PeerVPCOwner: "{{ environment_variable.AdmincentralAwsAccountId }}"
+  PeerVPCCIDR: 10.4.0.0/16
+  PeerRoleName: essentials-VPCPeeringAuthorizerRole-UYRMWCKIO3GS
