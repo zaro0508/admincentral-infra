@@ -2,6 +2,7 @@ sudo: false
 language: python
 python: 3.5
 cache: pip
+fast_finish: true
 install:
 - ./setup_git_crypt.sh
 - openssl aes-256-cbc -K $encrypted_a59d35da2f36_key -iv $encrypted_a59d35da2f36_iv -in git-crypt.key.enc -out git-crypt.key -d
@@ -12,5 +13,5 @@ install:
 - ./setup_aws_cli.sh
 - pip install sceptre
 script:
-- ./validate-templates.sh
+- ./validate-templates.sh || travis_terminate 1
 - sceptre --var "profile=default" --var "region=us-east-1" launch-env prod
