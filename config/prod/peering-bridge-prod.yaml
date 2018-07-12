@@ -2,6 +2,6 @@ template_path: templates/VPCPeer.yaml
 stack_name: peering-bridge-prod
 parameters:
   PeerVPC: vpc-9c70bbf9
-  PeerVPCOwner: "{{ environment_variable.BridgeProdAwsAccountId }}"
+  PeerVPCOwner: !ssm /infra/BridgeProdAwsAccountId
   PeerVPCCIDR: 172.31.0.0/16
   PeerRoleName: bridge-VPCPeeringAuthorizerRole-1XKEYVXHDOYI5

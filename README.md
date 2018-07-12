@@ -5,15 +5,13 @@ Install, configure and manage the AWS AdminCentral account.
 ## Instructions to create or update CF stacks
 
 ```
-# unlock repo
-git-crypt unlock
-# set env vars
-source env_vars && source env_vars.secret
-# Update CF stacks with sceptre
+# Update CF stacks with sceptre:
+# sceptre launch-stack prod <stack_name>
 ```
 
-The above should setup resources for the account.  Once the infrastructure for the account has been setup
-you can access and view the account using the [AWS console](https://AWS-account-ID-or-alias.signin.aws.amazon.com/console).
+The above should setup resources for the AWS account.  Once the infrastructure
+for the account has been setup you can access and view the account using the
+[AWS console](https://AWS-account-ID-or-alias.signin.aws.amazon.com/console).
 
 *Note - This project depends on CF templates from other accounts.*
 
@@ -23,29 +21,8 @@ allow the VPN access to other VPCs.  To setup VPC peering from the VPN VPC to an
 VPC run the following template.
 
 ```
-aws --profile admincentral.travis --region us-east-1 cloudformation create-stack \
---stack-name peering-$PeerAccountName \
---capabilities CAPABILITY_NAMED_IAM \
---template-body file://cf_templates/VPCPeer.yaml \
---parameters \
-ParameterKey=PeerVPC,ParameterValue=$PeerAccountVpcId \
-ParameterKey=PeerVPCOwner,ParameterValue=$PeerAccountId \
-ParameterKey=PeerRoleName,ParameterValue=$VPCPeeringAuthorizerRole \
-ParameterKey=PeerVPCCIDR,ParameterValue=$PeerAccountVpcCidr
-```
-
-
-Example:
-```
-aws --profile admincentral.travis --region us-east-1 cloudformation create-stack \
---stack-name peering-bridge-develop \
---capabilities CAPABILITY_NAMED_IAM \
---template-body file://cf_templates/VPCPeer.yaml \
---parameters \
-ParameterKey=PeerVPC,ParameterValue="vpc-5678efghi" \
-ParameterKey=PeerVPCOwner,ParameterValue="123456789123" \
-ParameterKey=PeerRoleName,ParameterValue="essentials-VPCPeeringAuthorizerRole-UYRMWCKIO3GS" \
-ParameterKey=PeerVPCCIDR,ParameterValue="10.4.0.0/16"
+set parameters in conf/prod/peering-bridge-prod.yaml
+run 'sceptre launch-stack prod peering-bridge-prod'
 ```
 
 The [VPCPeer.yaml template](./cf_templates/VPCPeer.yaml) should setup the VPC peering
@@ -74,7 +51,7 @@ We have configured Travis to deploy CF template updates.  Travis deploys using
 * https://travis-ci.org/Sage-Bionetworks/admincentral-infra
 
 ## Secrets
-* We use [git-crypt](https://github.com/AGWA/git-crypt) to hide secrets.
-Access to secrets is tightly controlled.  You will be required to
-have your own [GPG key](https://help.github.com/articles/generating-a-new-gpg-key)
-and you must request access by a maintainer of this project.
+* We use the [AWS SSM](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html)
+to store secrets for this project.  Sceptre retrieves the secrets using
+a [sceptre ssm resolver](https://github.com/cloudreach/sceptre/tree/v1/contrib/ssm-resolver)
+and passes them to the cloudformation stack on deployment.
