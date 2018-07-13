@@ -2,6 +2,6 @@ template_path: templates/VPCPeer.yaml
 stack_name: peering-bridge-aux
 parameters:
   PeerVPC: vpc-e9335a92
-  PeerVPCOwner: "{{ environment_variable.BridgeDevAwsAccountId }}"
+  PeerVPCOwner: !ssm /infra/BridgeDevAwsAccountId
   PeerVPCCIDR: 172.51.0.0/16
   PeerRoleName: bridge-VPCPeeringAuthorizerRole-13KSQX7XGYVAJ
