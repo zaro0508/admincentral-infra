@@ -3,6 +3,7 @@ stack_name: essentials
 parameters:
   OperatorEmail: admincentral@sagebase.org
   VpcPeeringRequesterAwsAccountId: !ssm /infra/AdmincentralAwsAccountId
+  LambdaBucketVersioning: Enabled
 hooks:
   before_update:
     - !cmd "curl https://raw.githubusercontent.com/Sage-Bionetworks/aws-infra/master/templates/essentials.yaml --create-dirs -o remote-templates/essentials.yaml"
