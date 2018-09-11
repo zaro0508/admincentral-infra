@@ -15,7 +15,9 @@ Resources:
     Properties:
       UserName: x.schildwachter@sagebase.org
       Groups:
+        - !Ref AWSIAMAllUsersGroup
         - !Ref AWSIAMDeveloperUsersGroup
+        - !Ref AWSIAMBillingManagersGroup
       LoginProfile:
         Password: !Ref InitNewUserPassword
         PasswordResetRequired: true
@@ -24,7 +26,9 @@ Resources:
     Properties:
       UserName: khai.do@sagebase.org
       Groups:
+        - !Ref AWSIAMAllUsersGroup
         - !Ref AWSIAMDeveloperUsersGroup
+        - !Ref AWSIAMBillingManagersGroup
       LoginProfile:
         Password: !Ref InitNewUserPassword
         PasswordResetRequired: true
@@ -34,7 +38,6 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/PowerUserAccess
         - arn:aws:iam::aws:policy/IAMReadOnlyAccess
-        - !Ref AWSIAMEnforceMfaPolicy
         - !Ref AWSIAMDynamoDenyDeletePolicy
         - !Ref AWSIAMRdsDenyDeletePolicy
   AWSIAMAdminRole:
@@ -79,6 +82,16 @@ Resources:
               - rds:DeleteDBInstance
               - rds:DeleteDBSnapshot
             Resource: "*"
+  AWSIAMOrganizationsFullAccessPolicy:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          -
+            Effect: "Allow"
+            Action: "organizations:*"
+            Resource: "*"
   AWSIAMAdminRolePolicy:
     Type: "AWS::IAM::Policy"
     Properties:
@@ -100,6 +113,18 @@ Resources:
       Roles:
         -
           !Ref "AWSIAMAdminRole"
+  AWSIAMAllUsersGroup:
+    Type: 'AWS::IAM::Group'
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - !Ref AWSIAMEnforceMfaPolicy
+  AWSIAMBillingManagersGroup:
+    Type: 'AWS::IAM::Group'
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/Billing
+        - !Ref AWSIAMOrganizationsFullAccessPolicy
   # resources for logging services
   IAMLoggingServiceManagedPolicy:
     Type: "AWS::IAM::ManagedPolicy"
