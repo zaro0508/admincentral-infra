@@ -1,4 +1,4 @@
-template_path: templates/VPCPeer.yaml
+template_path: VPCPeer.yaml
 stack_name: peering-bridge-prod
 parameters:
   PeerVPC: vpc-9c70bbf9

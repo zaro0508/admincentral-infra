@@ -1,10 +1,10 @@
-template_path: remote-templates/jumpcloud.yaml
+template_path: remote/jumpcloud.yaml
 stack_name: jumpcloud
 dependencies:
-  - essentials
+  - prod/essentials.yaml
 parameters:
   LambdaBucket: essentials-awss3lambdaartifactsbucket-x29ftznj6pqw
   JcServiceApiKey: !ssm /infra/JcServiceApiKey
 hooks:
   before_update:
-    - !cmd "curl https://raw.githubusercontent.com/Sage-Bionetworks/aws-infra/master/templates/jumpcloud.yaml --create-dirs -o remote-templates/jumpcloud.yaml"
+    - !cmd "curl https://s3.amazonaws.com/{{stack_group_config.admincentral_cf_bucket}}/aws-infra/master/jumpcloud.yaml --create-dirs -o templates/remote/jumpcloud.yaml"
