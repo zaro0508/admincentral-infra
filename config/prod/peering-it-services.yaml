@@ -1,4 +1,4 @@
-template_path: templates/VPCPeer.yaml
+template_path: VPCPeer.yaml
 stack_name: peering-it-services
 parameters:
   PeerVPC: vpc-5326f028
