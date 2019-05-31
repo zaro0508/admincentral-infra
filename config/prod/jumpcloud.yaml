@@ -3,7 +3,6 @@ stack_name: jumpcloud
 dependencies:
   - prod/essentials.yaml
 parameters:
-  LambdaBucket: essentials-awss3lambdaartifactsbucket-x29ftznj6pqw
   JcServiceApiKey: !ssm /infra/JcServiceApiKey
 hooks:
   before_update:
