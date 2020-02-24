@@ -24,7 +24,6 @@ Resources:
   # Bucket for cloudformation snippets
   CloudformationSnippetsBucket:
     Type: "AWS::S3::Bucket"
-    DeletionPolicy: Delete
     Properties:
       AccessControl: PublicRead
       Tags:
@@ -34,20 +33,6 @@ Resources:
           Value: !Ref Project
         - Key: "OwnerEmail"
           Value: !Ref OwnerEmail
-  CloudformationSnippetsBucketPolicy:
-    Type: "AWS::S3::BucketPolicy"
-    Properties:
-      Bucket: !Ref CloudformationSnippetsBucket
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          -
-            Sid: "AllowPublicRead"
-            Effect: "Allow"
-            Principal:
-              AWS: "*"
-            Action: "s3:GetObject"
-            Resource: !Sub "arn:aws:s3:::${CloudformationSnippetsBucket}/*"
   # requires the cloudformation S3 objects macro
   # https://github.com/Sage-Bionetworks/aws-infra/tree/master/lambdas/cfn-s3objects-macro
   ServiceCatalogSupportSnippet:
@@ -61,13 +46,13 @@ Resources:
       Target:
         Bucket: !Ref CloudformationSnippetsBucket
         Key: scipoolprod-sc-lib-infra/support.yaml
-        ContentType: text
+        ContentType: application/json
         ACL: public-read
-        Body: |
-          SupportDescription: Sage IT
-          SupportEmail: it@sagebase.org
-          AcceptLanguage: en
-          SupportUrl: https://sagebionetworks.slack.com/#sageit
+      Body: |-
+        SupportDescription: "Sage IT"
+        SupportEmail: "it@sagebase.org"
+        AcceptLanguage: "en"
+        SupportUrl: "https://sagebionetworks.slack.com/#sageit"
 Outputs:
   CloudformationSnippetsBucket:
     Value: !Ref 'CloudformationSnippetsBucket'
