@@ -1,0 +1,27 @@
+Description: Resources for AWS IDP providers
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  IdpBucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: Delete
+    Properties:
+      AccessControl: PublicRead
+  IdpBucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref IdpBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: "AllowPublicRead"
+            Effect: "Allow"
+            Principal:
+              AWS: "*"
+            Action: "s3:GetObject"
+            Resource: !Sub "arn:aws:s3:::${IdpBucket}/*"
+Outputs:
+  IdpBucket:
+    Value: !Ref IdpBucket
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-IdpBucket'

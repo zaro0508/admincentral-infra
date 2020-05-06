@@ -1,0 +1,4 @@
+template_path: "idp.yaml"
+stack_name: "idp"
+dependencies:
+  - prod/bootstrap.yaml
