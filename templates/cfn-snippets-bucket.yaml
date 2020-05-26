@@ -53,6 +53,26 @@ Resources:
         SupportEmail: "it@sagebase.org"
         AcceptLanguage: "en"
         SupportUrl: "https://sagebionetworks.slack.com/#sageit"
+  ServiceCatalogProductsSnippet:
+    Type: AWS::S3::Object
+    Metadata:
+      cfn-lint:
+        config:
+          ignore_checks:
+            - E3001
+    Properties:
+      Target:
+        Bucket: !Ref CloudformationSnippetsBucket
+        Key: scipool/products.yaml
+        ContentType: application/json
+        ACL: public-read
+      Body: |-
+        Owner: "Sage Bionetworks"
+        Distributor: "Sage Bionetworks"
+        SupportDescription: "Sage Bionetworks IT"
+        SupportEmail: "it@sagebase.org"
+        AcceptLanguage: "en"
+        SupportUrl: "https://sagebionetworks.slack.com/#sageit"
 Outputs:
   CloudformationSnippetsBucket:
     Value: !Ref 'CloudformationSnippetsBucket'
