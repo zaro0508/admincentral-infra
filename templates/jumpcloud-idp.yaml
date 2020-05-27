@@ -34,6 +34,7 @@ Resources:
               StringEquals:
                 "SAML:aud": "https://signin.aws.amazon.com/saml"
   # Role to deploy cloudformation templates and lambdas
+  # For Sage IT Image-Librarians and Lambda-Librarians
   AdmincentralCfnDeployerSamlProvider:
     Type: Custom::SAMLProvider
     Properties:
