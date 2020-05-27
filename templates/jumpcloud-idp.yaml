@@ -48,7 +48,7 @@ Resources:
       MaxSessionDuration: 28800
       RoleName: !GetAtt AdmincentralAdminSamlProvider.Name
       ManagedPolicyArns:
-        - !Ref CfnDeployerServiceManagedPolicy
+        - 'Fn::ImportValue': !Sub '${AWS::Region}-iam-policies-CfnDeployerServiceManagedPolicyArn'
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -59,39 +59,6 @@ Resources:
             Condition:
               StringEquals:
                 "SAML:aud": "https://signin.aws.amazon.com/saml"
-  CfnDeployerServiceManagedPolicy:
-    Type: "AWS::IAM::ManagedPolicy"
-    Properties:
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Action:
-              - s3:ListAllMyBuckets
-            Resource: arn:aws:s3:::*
-          - Effect: Allow
-            Action:
-              - s3:ListBucket
-              - s3:GetBucketLocation
-            Resource:
-              - 'Fn::ImportValue': !Sub '${AWS::Region}-bootstrap-CloudformationBucketArn'
-              - 'Fn::ImportValue': !Sub '${AWS::Region}-essentials-LambdaArtifactsBucketArn'
-          - Effect: Allow
-            Action:
-              - s3:PutObject
-              - s3:PutObjectAcl
-              - s3:GetObject
-              - s3:GetObjectAcl
-              - s3:DeleteObject
-            Resource:
-              - 'Fn::Join':
-                  - ''
-                  - - 'Fn::ImportValue': !Sub '${AWS::Region}-bootstrap-CloudformationBucketArn'
-                    - '/*'
-              - 'Fn::Join':
-                  - ''
-                  - - 'Fn::ImportValue': !Sub '${AWS::Region}-essentials-LambdaArtifactsBucketArn'
-                    - '/*'
 Outputs:
   AdmincentralAdminSamlProviderArn:
     Value: !Ref AdmincentralAdminSamlProvider
@@ -109,7 +76,3 @@ Outputs:
     Value: !GetAtt AdmincentralCfnDeployerSamlProviderRole.Arn
     Export:
       Name: !Sub '${AWS::Region}-${AWS::StackName}-AdmincentralCfnDeployerSamlProviderRoleArn'
-  CfnDeployerServiceManagedPolicyArn:
-    Value: !Ref CfnDeployerServiceManagedPolicy
-    Export:
-      Name: !Sub '${AWS::Region}-${AWS::StackName}-CfnDeployerServiceManagedPolicyArn'
