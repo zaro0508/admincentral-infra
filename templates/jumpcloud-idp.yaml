@@ -47,7 +47,7 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       MaxSessionDuration: 28800
-      RoleName: !GetAtt AdmincentralAdminSamlProvider.Name
+      RoleName: !GetAtt AdmincentralCfnDeployerSamlProvider.Name
       ManagedPolicyArns:
         - 'Fn::ImportValue': !Sub '${AWS::Region}-iam-policies-CfnDeployerServiceManagedPolicyArn'
       AssumeRolePolicyDocument:
@@ -55,7 +55,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Federated: !Ref AdmincentralAdminSamlProvider
+              Federated: !Ref AdmincentralCfnDeployerSamlProvider
             Action: sts:AssumeRoleWithSAML
             Condition:
               StringEquals:
