@@ -40,7 +40,7 @@ Resources:
       ServiceToken: !ImportValue
         'Fn::Sub': '${AWS::Region}-cfn-cr-saml-provider-FunctionArn'
       Name: "admincentral-cfndeployer"
-      Metadata: !Ref AdmincentralAdminMetadata
+      Metadata: !Ref AdmincentralCfnDeployerMetadata
       URL: ""
   AdmincentralCfnDeployerSamlProviderRole:
     Type: AWS::IAM::Role
@@ -48,7 +48,7 @@ Resources:
       MaxSessionDuration: 28800
       RoleName: !GetAtt AdmincentralAdminSamlProvider.Name
       ManagedPolicyArns:
-        - !Ref CfnDeployerServiceRolePolicy
+        - !Ref CfnDeployerServiceManagedPolicy
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -59,10 +59,9 @@ Resources:
             Condition:
               StringEquals:
                 "SAML:aud": "https://signin.aws.amazon.com/saml"
-  CfnDeployerServiceRolePolicy:
-    Type: "AWS::IAM::Policy"
+  CfnDeployerServiceManagedPolicy:
+    Type: "AWS::IAM::ManagedPolicy"
     Properties:
-      PolicyName: "CfnDeployer"
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -110,3 +109,7 @@ Outputs:
     Value: !GetAtt AdmincentralCfnDeployerSamlProviderRole.Arn
     Export:
       Name: !Sub '${AWS::Region}-${AWS::StackName}-AdmincentralCfnDeployerSamlProviderRoleArn'
+  CfnDeployerServiceManagedPolicyArn:
+    Value: !Ref CfnDeployerServiceManagedPolicy
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-CfnDeployerServiceManagedPolicyArn'
