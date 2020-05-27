@@ -4,6 +4,9 @@ Parameters:
   AdmincentralAdminMetadata:
     Type: String
     Description: "Public certificate for Jumpcloud admincentral-admin app"
+  AdmincentralCfnDeployerMetadata:
+    Type: String
+    Description: "Public certificate for Jumpcloud admincentral-cfndeployer app"
 Resources:
   AdmincentralAdminSamlProvider:
     Type: Custom::SAMLProvider
@@ -30,6 +33,66 @@ Resources:
             Condition:
               StringEquals:
                 "SAML:aud": "https://signin.aws.amazon.com/saml"
+  # Role to deploy cloudformation templates and lambdas
+  AdmincentralCfnDeployerSamlProvider:
+    Type: Custom::SAMLProvider
+    Properties:
+      ServiceToken: !ImportValue
+        'Fn::Sub': '${AWS::Region}-cfn-cr-saml-provider-FunctionArn'
+      Name: "admincentral-cfndeployer"
+      Metadata: !Ref AdmincentralAdminMetadata
+      URL: ""
+  AdmincentralCfnDeployerSamlProviderRole:
+    Type: AWS::IAM::Role
+    Properties:
+      MaxSessionDuration: 28800
+      RoleName: !GetAtt AdmincentralAdminSamlProvider.Name
+      ManagedPolicyArns:
+        - !Ref CfnDeployerServiceRolePolicy
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Ref AdmincentralAdminSamlProvider
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                "SAML:aud": "https://signin.aws.amazon.com/saml"
+  CfnDeployerServiceRolePolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "CfnDeployer"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:ListAllMyBuckets
+            Resource: arn:aws:s3:::*
+          - Effect: Allow
+            Action:
+              - s3:ListBucket
+              - s3:GetBucketLocation
+            Resource:
+              - 'Fn::ImportValue': !Sub '${AWS::Region}-bootstrap-CloudformationBucketArn'
+              - 'Fn::ImportValue': !Sub '${AWS::Region}-essentials-LambdaArtifactsBucketArn'
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:PutObjectAcl
+              - s3:GetObject
+              - s3:GetObjectAcl
+              - s3:DeleteObject
+            Resource:
+              - 'Fn::Join':
+                  - ''
+                  - - 'Fn::ImportValue': !Sub '${AWS::Region}-bootstrap-CloudformationBucketArn'
+                    - '/*'
+              - 'Fn::Join':
+                  - ''
+                  - - 'Fn::ImportValue': !Sub '${AWS::Region}-essentials-LambdaArtifactsBucketArn'
+                    - '/*'
 Outputs:
   AdmincentralAdminSamlProviderArn:
     Value: !Ref AdmincentralAdminSamlProvider
@@ -39,3 +102,11 @@ Outputs:
     Value: !GetAtt AdmincentralAdminSamlProviderRole.Arn
     Export:
       Name: !Sub '${AWS::Region}-${AWS::StackName}-AdmincentralAdminSamlProviderRoleArn'
+  AdmincentralCfnDeployerSamlProviderArn:
+    Value: !Ref AdmincentralCfnDeployerSamlProvider
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-AdmincentralCfnDeployerSamlProviderArn'
+  AdmincentralCfnDeployerSamlProviderRoleArn:
+    Value: !GetAtt AdmincentralCfnDeployerSamlProviderRole.Arn
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-AdmincentralCfnDeployerSamlProviderRoleArn'
