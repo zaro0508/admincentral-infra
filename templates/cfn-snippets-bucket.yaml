@@ -69,8 +69,8 @@ Resources:
       Body: |-
         Owner: "Sage Bionetworks"
         Distributor: "Sage Bionetworks"
-        SupportDescription: "Sage Bionetworks IT"
-        SupportEmail: "it@sagebase.org"
+        SupportDescription: "Sage Bionetworks Support"
+        SupportEmail: "sc-support@sagebase.org"
         AcceptLanguage: "en"
         SupportUrl: "https://sagebionetworks.slack.com/#sageit"
 Outputs:
