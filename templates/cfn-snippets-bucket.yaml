@@ -72,7 +72,7 @@ Resources:
         SupportDescription: "Sage Bionetworks Support"
         SupportEmail: "sc-support@sagebase.org"
         AcceptLanguage: "en"
-        SupportUrl: "https://sagebionetworks.slack.com/#sageit"
+        SupportUrl: "https://www.synapse.org/#!Synapse:syn2580853/discussion/default"
 Outputs:
   CloudformationSnippetsBucket:
     Value: !Ref 'CloudformationSnippetsBucket'
