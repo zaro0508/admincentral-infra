@@ -34,6 +34,12 @@ Resources:
                   - ''
                   - - 'Fn::ImportValue': !Sub '${AWS::Region}-essentials-LambdaArtifactsBucketArn'
                     - '/*'
+          - Effect: Allow
+            Sid: "Manage applications in serverless repository"
+            Action:
+              - "serverlessrepo:*"
+            Resource:
+              - !Sub "arn:aws:serverlessrepo:${AWS::Region}:${AWS::AccountId}:applications/*"
 Outputs:
   CfnDeployerServiceManagedPolicyArn:
     Value: !Ref CfnDeployerServiceManagedPolicy
