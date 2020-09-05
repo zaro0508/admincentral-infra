@@ -34,8 +34,8 @@ Resources:
                   - ''
                   - - 'Fn::ImportValue': !Sub '${AWS::Region}-essentials-LambdaArtifactsBucketArn'
                     - '/*'
-          - Effect: Allow
-            Sid: "Manage applications in serverless repository"
+          - Sid: ManageServerlessRepo
+            Effect: Allow
             Action:
               - "serverlessrepo:*"
             Resource:
