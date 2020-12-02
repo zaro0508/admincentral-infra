@@ -24,13 +24,16 @@ Resources:
           PrivateSubnet1: "us-east-1-cesspoolvpc-PrivateSubnet1"
           VpnSecurityGroup: "us-east-1-cesspoolvpc-VpnSecurityGroup"
           VPCId: "us-east-1-cesspoolvpc-VPCId"
+          TgwSecurityGroupId: "us-east-1-tgw-spoke-cesspoolvpc-TgwSecurityGroupId"
         "237179673806":   # org-sagebase-scipoolprod
           PrivateSubnet: "us-east-1-internalpoolvpc-PrivateSubnet"
           PrivateSubnet1: "us-east-1-internalpoolvpc-PrivateSubnet1"
           VpnSecurityGroup: "us-east-1-internalpoolvpc-VpnSecurityGroup"
           VPCId: "us-east-1-internalpoolvpc-VPCId"
+          TgwSecurityGroupId: "us-east-1-tgw-spoke-scipoolprod-TgwSecurityGroupId"
         "423819316185":   # org-sagebase-strides
           PrivateSubnet: "us-east-1-stridespoolvpc-PrivateSubnet"
           PrivateSubnet1: "us-east-1-stridespoolvpc-PrivateSubnet1"
           VpnSecurityGroup: "us-east-1-stridespoolvpc-VpnSecurityGroup"
           VPCId: "us-east-1-stridespoolvpc-VPCId"
+          TgwSecurityGroupId: "us-east-1-tgw-spoke-strides-TgwSecurityGroupId"
