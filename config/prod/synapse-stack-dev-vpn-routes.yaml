@@ -1,0 +1,5 @@
+template_path: synapse-stack-vpn-routes.yaml
+stack_name: synapse-stack-dev-vpn-routes
+parameters:
+  PeerVPCCIDR: 10.24.0.0/16
+  VPCPeeringConnectionId: pcx-08e34f0e8c7e984b8
