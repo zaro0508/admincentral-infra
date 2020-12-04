@@ -1,5 +1,5 @@
-Description: Create an authorizer role to authorize create/accept of a VPCPeering for a given AWS account
 AWSTemplateFormatVersion: 2010-09-09
+Description: Create an authorizer role to authorize create/accept of a VPCPeering for a given AWS account
 Parameters:
   VpcPeeringRequesterAwsAccountId:
     Type: String

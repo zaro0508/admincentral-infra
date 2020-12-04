@@ -1,9 +1,5 @@
-# Template source https://github.com/awslabs/aws-cloudformation-templates/blob/master/aws/solutions/VPCPeering/VPCPeer.json
 AWSTemplateFormatVersion: 2010-09-09
-Description: >-
-  This template create a lambda function and use it to accept a cross account
-  VPC Peer request. It then sets up routes from the VPN to the target VPC.
-Metadata: {}
+Description: This template adds routes to the VPN route tables for a Synapse stack VPC
 Parameters:
   PeerVPCCIDR:
     Description: CIDR of the VPC in the peering account (i.e. 10.17.0.0/16)
