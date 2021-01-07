@@ -35,6 +35,11 @@ Resources:
       PeerRoleName: !Ref PeerRoleName
   LambdaVPCPeer:
     Type: 'AWS::Lambda::Function'
+    Metadata:
+      cfn-lint:
+        config:
+          ignore_checks:
+            - E2531
     Properties:
       Handler: index.vpc_request
       Role: !GetAtt
