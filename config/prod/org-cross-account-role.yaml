@@ -1,0 +1,7 @@
+template_path: remote/org-cross-account-role.yaml
+stack_name: org-cross-account-role
+parameters:
+  MasterAccountId: "531805629419"
+hooks:
+  before_launch:
+    - !cmd "curl https://{{stack_group_config.admincentral_cf_bucket}}.s3.amazonaws.com/aws-infra/master/org-cross-account-role.yaml --create-dirs -o templates/remote/org-cross-account-role.yaml"
